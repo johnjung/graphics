@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 612 792">
+  <style>
+    /*
+    #a_neg_b_neg, #a_neg_b_nil, #a_neg_b_pos, #a_nil_b_neg, 
+    #a_nil_b_pos, #a_pos_b_neg, #a_pos_b_nil, #a_pos_b_pos { 
+      display: none; 
+    }
+    */
+  </style>
+  <defs>
+    <clipPath id="clip_a_neg">
+      <circle cx="206.12" cy="205.85" r="199.76"/>
+    </clipPath>
+    <clipPath id="clip_b_neg">
+      <circle cx="405.88" cy="205.85" r="199.76"/>
+    </clipPath>
+    <clipPath id="clip_a_pos">
+      <circle cx="244.39" cy="139.93" r="123.59"/>
+    </clipPath>
+    <clipPath id="clip_b_pos">
+      <circle cx="367.99" cy="139.93" r="123.59"/>
+    </clipPath>
+    <mask id="mask_a_neg_b_neg">
+      <!-- a_neg, clipped to b_neg -->
+      <circle cx="206.12" cy="205.85" fill="white" r="199.76" clip-path="url(#clip_b_neg)"/>
+      <!-- subtract a_pos -->
+      <circle cx="244.39" cy="139.93" fill="black" r="123.59"/>
+      <!-- subtract b_pos -->
+      <circle cx="367.99" cy="139.93" fill="black" r="123.59"/>
+    </mask>
+    <mask id="mask_a_neg_b_nil">
+      <!-- a_neg -->
+      <circle cx="206.12" cy="205.85" fill="white" r="199.76"/>
+      <!-- subtract a_pos -->
+      <circle cx="244.39" cy="139.93" fill="black" r="123.59"/>
+      <!-- subtract b_neg -->
+      <circle cx="405.88" cy="205.85" fill="black" r="199.76"/>
+    </mask>
+    <mask id="mask_a_neg_b_pos">
+      <!-- a_neg, clipped to b_pos -->
+      <circle cx="206.12" cy="205.85" fill="white" r="199.76" clip-path="url(#clip_b_pos)"/>
+      <!-- subtract a_pos -->
+      <circle cx="244.39" cy="139.93" fill="black" r="123.59"/>
+    </mask>
+    <mask id="mask_a_pos_b_neg">
+      <!-- b_neg, clipped to a_pos -->
+      <circle cx="405.88" cy="205.85" fill="white" r="199.76" clip-path="url(#clip_a_pos)"/>
+      <!-- subtract b_pos -->
+      <circle cx="367.99" cy="139.93" fill="black" r="123.59"/>
+    </mask>
+    <mask id="mask_a_nil_b_neg">
+      <!-- b_neg -->
+      <circle cx="405.88" cy="205.85" fill="white" r="199.76"/>
+      <!-- subtract b_pos -->
+      <circle cx="367.99" cy="139.93" fill="black" r="123.59"/>
+      <!-- subtract a_neg -->
+      <circle cx="206.12" cy="205.85" fill="black" r="199.76"/>
+    </mask>
+    <mask id="mask_a_pos_b_pos">
+      <!-- a_pos, clipped to b_pos -->
+      <circle cx="244.39" cy="139.93" fill="white" r="123.59" clip-path="url(#clip_b_pos)"/>
+    </mask>
+    <mask id="mask_a_pos_b_nil">
+      <!-- a_pos -->
+      <circle cx="244.39" cy="139.93" fill="white" r="123.59"/>
+      <!-- subtract b_neg -->
+      <circle cx="405.88" cy="205.85" fill="black" r="199.76"/>
+    </mask>
+    <mask id="mask_a_nil_b_pos">
+      <!-- b_pos -->
+      <circle cx="367.99" cy="139.93" fill="white" r="123.59"/>
+      <!-- subtract a_neg -->
+      <circle cx="206.12" cy="205.85" fill="black" r="199.76"/>
+    </mask>
+  </defs>
+  
+  <!-- fills -->
+  <!-- a_neg b_neg -->
+  <rect id="a_neg_b_neg" width="612" height="792" fill="lightyellow" mask="url(#mask_a_neg_b_neg)"/>
+  <!-- a_neg b_nil -->
+  <rect id="a_neg_b_nil" width="612" height="792" fill="red" mask="url(#mask_a_neg_b_nil)"/>
+  <!-- a_neg b_pos -->
+  <rect id="a_neg_b_pos" width="612" height="792" fill="lightblue" mask="url(#mask_a_neg_b_pos)"/>
+  <!-- a_nil b_neg -->
+  <rect id="a_nil_b_neg" width="612" height="792" fill="pink" mask="url(#mask_a_nil_b_neg)"/>
+  <!-- a_nil b_pos -->
+  <rect id="a_nil_b_pos" width="612" height="792" fill="lightgreen" mask="url(#mask_a_nil_b_pos)"/>
+  <!-- a_pos b_neg -->
+  <rect id="a_pos_b_neg" width="612" height="792" fill="blue" mask="url(#mask_a_pos_b_neg)"/>
+  <!-- a_pos b_nil -->
+  <rect id="a_pos_b_nil" width="612" height="792" fill="green" mask="url(#mask_a_pos_b_nil)"/>
+  <!-- a_pos b_pos -->
+  <rect id="a_pos_b_pos" width="612" height="792" fill="yellow" mask="url(#mask_a_pos_b_pos)"/>
+  
+  <!-- outlines -->
+  <!-- a_neg -->
+  <circle cx="206.12" cy="205.85" fill="white" fill-opacity="0.0" stroke="black" stroke-width="5" r="199.76"/>
+  <!-- a_pos -->
+  <circle cx="244.39" cy="139.93" fill="white" fill-opacity="0.0" stroke="black" stroke-width="5" r="123.59"/>
+  <!-- b_pos -->
+  <circle cx="367.99" cy="139.93" fill="white" fill-opacity="0.0" stroke="black" stroke-width="5" r="123.59"/>
+  <!-- b_neg -->
+  <circle cx="405.88" cy="205.85" fill="white" fill-opacity="0.0" stroke="black" stroke-width="5" r="199.76"/>
+</svg>
