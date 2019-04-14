@@ -5,23 +5,26 @@ import xml.etree.ElementTree as ElementTree
 
 from trianglesolver import solve
 
+
 def get_area(radius):
     return math.pi * math.pow(radius, 2)
 
+
 def get_radius(area):
     return math.sqrt(area / math.pi)
+
 
 def get_segment_area(radius, radians):
     degrees = (180 / math.pi) * radians
 
     area_of_sector = math.pi * \
-                     (radius * radius) * \
-                     (degrees / 360)
- 
+        (radius * radius) * \
+        (degrees / 360)
+
     area_of_triangle = 0.5 * \
-                       (radius * radius) * \
-                       math.sin((degrees * math.pi) / 180)
- 
+        (radius * radius) * \
+        math.sin((degrees * math.pi) / 180)
+
     return area_of_sector - area_of_triangle
 
 
@@ -35,8 +38,9 @@ def get_overlap_area(radius_a, radius_b, distance):
     if distance >= radius_a + radius_b:
         return 0.0
     else:
-        _, _, _, A, B, _ = solve(a = radius_a, b = radius_b, c = distance)
+        _, _, _, A, B, _ = solve(a=radius_a, b=radius_b, c=distance)
         return get_segment_area(radius_a, B * 2) + get_segment_area(radius_b, A * 2)
+
 
 def get_lookup_table(radius_a, radius_b, steps):
     start_distance = abs(radius_a - radius_b)
@@ -55,14 +59,15 @@ def get_lookup_table(radius_a, radius_b, steps):
 
 #
 # MAIN
-# 
+#
+
 
 chart_width = 576
 chart_height = 288
 
 area_a = 14000
 area_b = 12800
-# overlap as a percentage of circle b. 
+# overlap as a percentage of circle b.
 overlap = 0.97
 
 radius_a = get_radius(area_a)
@@ -105,5 +110,3 @@ ElementTree.SubElement(
 )
 
 print(ElementTree.tostring(svg, encoding='utf8', method='xml').decode('UTF-8'))
-
-
