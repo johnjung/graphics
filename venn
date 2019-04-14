@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import math
 import sys
 
@@ -57,56 +59,52 @@ def get_lookup_table(radius_a, radius_b, steps):
         s = s + 1
     return offsets
 
-#
-# MAIN
-#
-
-
-chart_width = 576
-chart_height = 288
-
-area_a = 14000
-area_b = 12800
-# overlap as a percentage of circle b.
-overlap = 0.97
-
-radius_a = get_radius(area_a)
-radius_b = get_radius(area_b)
-
-offsets = get_lookup_table(radius_a, radius_b, 100)
-overlap_found, distance = min(offsets, key=lambda x: abs(x[0] - overlap))
-
-illustration_width = radius_a + distance + radius_b
-
-ElementTree.register_namespace('', 'http://www.w3.org/2000/svg')
-
-svg = ElementTree.Element(
-    '{http://www.w3.org/2000/svg}svg',
-    width=str(chart_width),
-    height=str(chart_height),
-    version='1.1'
-)
-
-ElementTree.SubElement(
-    svg,
-    '{http://www.w3.org/2000/svg}circle',
-    cx=str(((chart_width - illustration_width) / 2) + radius_a),
-    cy=str(chart_height / 2),
-    r=str(radius_a),
-    fill='none',
-    stroke='black',
-    width='3',
-)
-
-ElementTree.SubElement(
-    svg,
-    '{http://www.w3.org/2000/svg}circle',
-    cx=str(((chart_width + illustration_width) / 2) - radius_b),
-    cy=str(chart_height / 2),
-    r=str(radius_b),
-    fill='none',
-    stroke='black',
-    width='3'
-)
-
-print(ElementTree.tostring(svg, encoding='utf8', method='xml').decode('UTF-8'))
+if __name__=='__main__':
+    chart_width = 576
+    chart_height = 288
+    
+    area_a = 14000
+    area_b = 12800
+    # overlap as a percentage of circle b.
+    overlap = 0.97
+    
+    radius_a = get_radius(area_a)
+    radius_b = get_radius(area_b)
+    
+    offsets = get_lookup_table(radius_a, radius_b, 100)
+    overlap_found, distance = min(offsets, key=lambda x: abs(x[0] - overlap))
+    
+    illustration_width = radius_a + distance + radius_b
+    
+    ElementTree.register_namespace('', 'http://www.w3.org/2000/svg')
+    
+    svg = ElementTree.Element(
+        '{http://www.w3.org/2000/svg}svg',
+        width=str(chart_width),
+        height=str(chart_height),
+        version='1.1'
+    )
+    
+    ElementTree.SubElement(
+        svg,
+        '{http://www.w3.org/2000/svg}circle',
+        cx=str(((chart_width - illustration_width) / 2) + radius_a),
+        cy=str(chart_height / 2),
+        r=str(radius_a),
+        fill='none',
+        stroke='black',
+        width='3',
+    )
+    
+    ElementTree.SubElement(
+        svg,
+        '{http://www.w3.org/2000/svg}circle',
+        cx=str(((chart_width + illustration_width) / 2) - radius_b),
+        cy=str(chart_height / 2),
+        r=str(radius_b),
+        fill='none',
+        stroke='black',
+        width='3'
+    )
+    
+    print(ElementTree.tostring(svg, encoding='utf8', method='xml').decode('UTF-8'))
