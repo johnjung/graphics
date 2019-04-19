@@ -44,6 +44,10 @@ produces a SVG as output.
 $ cat nutrition_information.csv | two_by_two --x=24 --y=25 - > two_by_two.svg
 ```
 
+## update_thumbnails.sh
+
+Resize a set of images to update thumbnails on a website. 
+
 ## venn
 
 Produce proportionate venn diagrams, where the size of each circle and the
