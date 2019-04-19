@@ -18,6 +18,7 @@ setup(
     url='https://github.com/johnjung/graphics',
     scripts=[
         'graphics/beer_flavor_wheel',
+        'graphics/structured_planning_venn',
         'graphics/two_by_two',
         'graphics/venn',
     ]
