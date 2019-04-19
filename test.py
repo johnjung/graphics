@@ -3,32 +3,6 @@ import unittest
 
 from graphics.venn import solve
 
-'''
-get_area(2) == math.pi * math.pow(2, 2)
-2 == get_radius(math.pi * math.pow(2, 2))
-0 == get_sector_area(2, 0)
-get_sector_area(2, math.pi * 0.5) == get_area(2) * .25
-get_sector_area(2, math.pi) == get_area(2) * 0.5
-get_sector_area(2, math.pi * 1.5) == get_area(2) * .75
-get_sector_area(2, math.pi * 2) == get_area(2)
-0 == get_triangle_opposite(1, 0.0)
-1.0 == get_triangle_opposite(1, math.pi * 0.4999)
-4 == get_chord_length(5, 0.823)
-4 == get_triangle_height(5, 1.288)
-3 == get_triangle_height(5, 1.854)
-12 == get_triangle_area(5, 1.288)
-get_segment_area(5, math.pi * 0.9999), math.pi * math.pow(5, 2) / 2
-get_segment_area(5, 1.288), get_sector_area(5, 1.288) - 12
-0 == get_segment_area_from_offset(5, 5)
-0 == get_segment_area_from_offset(5, 4.999)
-get_segment_area_from_offset(5, 0) == math.pi * math.pow(5, 2) / 2
-get_segment_area_from_offset(5, -4.999) == math.pi * math.pow(5, 2)
-get_radians_from_radius_and_offset(5, 0.00001) == math.pi / 2
-0 == get_radians_from_radius_and_offset(5, 4.99999)
-get_overlap_area(5, 5, 0) == math.pi * math.pow(5, 2)
-0 == get_overlap_area(5, 5, 10)
-'''
-
 class TestVenn(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -130,6 +104,60 @@ class TestVenn(unittest.TestCase):
             assert float_tuples_are_equal(tri, solve(b=b, c=c, B=B, ssa_flag=Ctype))
             assert float_tuples_are_equal(tri, solve(b=b, c=c, C=C, ssa_flag=Btype))
             '''
+
+    def test_get_radius(self):
+        self.assertEqual(
+            2,
+            get_radius(math.pi * math.pow(2, 2))
+        )
+
+    def test_get_area(self):
+        self.assertEqual(
+            get_area(2),
+            math.pi * math.pow(2, 2)
+        )
+
+    def test_get_segment_area(self):
+        self.assertEqual(
+            get_segment_area(5, math.pi * 0.9999),
+            math.pi * math.pow(5, 2) / 2
+        )
+        self.assertEqual(
+            get_segment_area(5, 1.288),
+            get_sector_area(5, 1.288) - 12
+        )
+
+    def test_get_sector_area(self):
+        self.assertEqual(
+            0,
+            get_sector_area(2, 0)
+        )
+        self.assertEqual(
+            get_sector_area(2, math.pi * 0.5),
+            get_area(2) * .25
+        )
+        self.assertEqual(
+            get_sector_area(2, math.pi),
+            get_area(2) * 0.5
+        )
+        self.assertEqual(
+            get_sector_area(2, math.pi * 1.5),
+            get_area(2) * .75
+        )
+        self.assertEqual(
+            get_sector_area(2, math.pi * 2),
+            get_area(2)
+        )
+
+    def test_overlap_area(self):
+        self.assertEqual(
+            get_overlap_area(5, 5, 0),
+            math.pi * math.pow(5, 2)
+        )
+        self.assertEqual(
+            0,
+            get_overlap_area(5, 5, 10)
+        )
 
 if __name__=='__main__':
     unittest.main()
