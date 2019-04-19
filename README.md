@@ -1,6 +1,4 @@
-# graphics
-
-v.0.0.1
+# Graphics
 
 A collection of scripts for making diagrams and graphics. Most scripts produce
 SVG output which can then be opened in software like Adobe Illustrator for
