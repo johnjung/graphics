@@ -1,6 +1,8 @@
 import math
 import unittest
 
+from graphics.venn import solve
+
 '''
 get_area(2) == math.pi * math.pow(2, 2)
 2 == get_radius(math.pi * math.pow(2, 2))
@@ -30,61 +32,104 @@ get_overlap_area(5, 5, 0) == math.pi * math.pow(5, 2)
 class TestVenn(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for a, b, c in ((7, 8, 9), (5, 6, 10), (5, 10, 6), (10, 5, 6), (5, 12, 13),
-                        (12, 5, 13), (12, 13, 5)):
-    def floats_are_equal(x, y):
-        return abs(x - y) <= 100 * EPSILON * (abs(x) + abs(y))
-    
-    def float_tuples_are_equal(x, y):
-        return all(floats_are_equal(x[i], y[i]) for i in range(len(x)))
-    
-    def test_triangle(a, b, c, A, B, C):
-        """ Check that the triangle satisfies the law of cosines and law of
-        sines"""
-        assert floats_are_equal(a/sin(A), b/sin(B))
-        assert floats_are_equal(a/sin(A), c/sin(C))
-        assert floats_are_equal(c**2, a**2 + b**2 - 2 * a * b * cos(C))
-        assert floats_are_equal(a**2, b**2 + c**2 - 2 * b * c * cos(A))
-        assert floats_are_equal(b**2, c**2 + a**2 - 2 * c * a * cos(B))
-    
-    def test_solver(a, b, c):
+        self.tests = ((7, 8, 9), (5, 6, 10), (5, 10, 6), (10, 5, 6), 
+                      (5, 12, 13), (12, 5, 13), (12, 13, 5))
+
+    def test_triangle_solver(self):
         """ Test that the program works, for a triangle of sides a,b,c."""
-        # first find the angles, testing SSS
-        a1, b1, c1, A, B, C = solve(a=a, b=b, c=c)
-        assert float_tuples_are_equal((a, b, c), (a1, b1, c1))
-        test_triangle(a, b, c, A, B, C)
-        tri = (a, b, c, A, B, C)
+
+        for a, b, c in self.tests:
+            # SSS
+            a1, b1, c1, A, B, C = solve(a=a, b=b, c=c)
+            self.assertAlmostEqual(a, a1, places=7)
+            self.assertAlmostEqual(b, b1, places=7)
+            self.assertAlmostEqual(c, c1, places=7)
+
+            self.assertAlmostEqual(a / math.sin(A), b / math.sin(B), places=7)
+            self.assertAlmostEqual(a / math.sin(A), c / math.sin(C), places=7)
+            self.assertAlmostEqual(a / math.sin(A), c / math.sin(C), places=7)
+
+            self.assertAlmostEqual(math.pow(c, 2), math.pow(a, 2) + math.pow(b, 2) - 2 * a * b * math.cos(C), places=7)
+            self.assertAlmostEqual(math.pow(a, 2), math.pow(b, 2) + math.pow(c, 2) - 2 * b * c * math.cos(A), places=7)
+            self.assertAlmostEqual(math.pow(b, 2), math.pow(c, 2) + math.pow(a, 2) - 2 * c * a * math.cos(B), places=7)
+
+            tri = (a, b, c, A, B, C)
     
-        # SAS tests
-        assert float_tuples_are_equal(tri, solve(a=a, b=b, C=C))
-        assert float_tuples_are_equal(tri, solve(a=a, c=c, B=B))
-        assert float_tuples_are_equal(tri, solve(b=b, c=c, A=A))
+            # SAS
+            a1, b1, c1, A1, B1, C1 = solve(a=a, b=b, C=C)
+            self.assertAlmostEqual(a, a1, places=7) 
+            self.assertAlmostEqual(b, b1, places=7) 
+            self.assertAlmostEqual(C, C1, places=7) 
+            
+            a1, b1, c1, A1, B1, C1 = solve(a=a, c=c, B=B)
+            self.assertAlmostEqual(a, a1, places=7) 
+            self.assertAlmostEqual(c, c1, places=7) 
+            self.assertAlmostEqual(B, B1, places=7) 
+
+            a1, b1, c1, A1, B1, C1 = solve(b=b, c=c, A=A)
+            self.assertAlmostEqual(b, b1, places=7) 
+            self.assertAlmostEqual(c, c1, places=7) 
+            self.assertAlmostEqual(A, A1, places=7) 
+
+            # SAA / ASA
+            a1, b1, c1, A1, B1, C1 = solve(a=a, A=A, B=B)
+            self.assertAlmostEqual(a, a1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(a=a, A=A, C=C)
+            self.assertAlmostEqual(a, a1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(a=a, B=B, C=C)
+            self.assertAlmostEqual(a, a1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(b=b, A=A, B=B)
+            self.assertAlmostEqual(b, b1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(b=b, A=A, C=C)
+            self.assertAlmostEqual(b, b1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(b=b, B=B, C=C)
+            self.assertAlmostEqual(b, b1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(c=c, A=A, B=B)
+            self.assertAlmostEqual(c, c1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(c=c, A=A, C=C)
+            self.assertAlmostEqual(c, c1, places=7)
+            self.assertAlmostEqual(A, A1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
+
+            a1, b1, c1, A1, B1, C1 = solve(c=c, B=B, C=C)
+            self.assertAlmostEqual(c, c1, places=7)
+            self.assertAlmostEqual(B, B1, places=7)
+            self.assertAlmostEqual(C, C1, places=7)
     
-        # SAA / ASA tests
-        assert float_tuples_are_equal(tri, solve(a=a, A=A, B=B))
-        assert float_tuples_are_equal(tri, solve(a=a, A=A, C=C))
-        assert float_tuples_are_equal(tri, solve(a=a, B=B, C=C))
-        assert float_tuples_are_equal(tri, solve(b=b, A=A, B=B))
-        assert float_tuples_are_equal(tri, solve(b=b, A=A, C=C))
-        assert float_tuples_are_equal(tri, solve(b=b, B=B, C=C))
-        assert float_tuples_are_equal(tri, solve(c=c, A=A, B=B))
-        assert float_tuples_are_equal(tri, solve(c=c, A=A, C=C))
-        assert float_tuples_are_equal(tri, solve(c=c, B=B, C=C))
-    
-        Atype = 'acute' if A < pi/2 else 'obtuse'
-        Btype = 'acute' if B < pi/2 else 'obtuse'
-        Ctype = 'acute' if C < pi/2 else 'obtuse'
-    
-        # SSA tests
-        assert float_tuples_are_equal(tri, solve(a=a, b=b, A=A, ssa_flag=Btype))
-        assert float_tuples_are_equal(tri, solve(a=a, b=b, B=B, ssa_flag=Atype))
-        assert float_tuples_are_equal(tri, solve(a=a, c=c, A=A, ssa_flag=Ctype))
-        assert float_tuples_are_equal(tri, solve(a=a, c=c, C=C, ssa_flag=Atype))
-        assert float_tuples_are_equal(tri, solve(b=b, c=c, B=B, ssa_flag=Ctype))
-        assert float_tuples_are_equal(tri, solve(b=b, c=c, C=C, ssa_flag=Btype))
-    
-    def run_lots_of_tests():
-        for a, b, c in ((7, 8, 9), (5, 6, 10), (5, 10, 6), (10, 5, 6), (5, 12, 13),
-                        (12, 5, 13), (12, 13, 5)):
-            test_solver(a, b, c)
-        print('All tests pass!')
+            Atype = 'acute' if A < pi/2 else 'obtuse'
+            Btype = 'acute' if B < pi/2 else 'obtuse'
+            Ctype = 'acute' if C < pi/2 else 'obtuse'
+
+            # SSA tests
+            '''
+            assert float_tuples_are_equal(tri, solve(a=a, b=b, A=A, ssa_flag=Btype))
+            assert float_tuples_are_equal(tri, solve(a=a, b=b, B=B, ssa_flag=Atype))
+            assert float_tuples_are_equal(tri, solve(a=a, c=c, A=A, ssa_flag=Ctype))
+            assert float_tuples_are_equal(tri, solve(a=a, c=c, C=C, ssa_flag=Atype))
+            assert float_tuples_are_equal(tri, solve(b=b, c=c, B=B, ssa_flag=Ctype))
+            assert float_tuples_are_equal(tri, solve(b=b, c=c, C=C, ssa_flag=Btype))
+            '''
+
+if __name__=='__main__':
+    unittest.main()
