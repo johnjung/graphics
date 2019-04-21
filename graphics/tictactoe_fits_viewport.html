@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+body, html {
+  height: 100%;
+}
+body {
+  align-items: center;
+  display: flex;
+  font-family: monospace;
+  font-size: 16.666vmin;
+  justify-content: center;
+  margin: 0;
+}
+div#board {
+  background-color: black;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  grid-gap: 5px;
+  width: 100vmin;
+}
+div.square {
+  background-color: white;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+div.square:first-child:after {
+  content: '';
+  display: block;
+  padding-bottom: 100%;
+  width: 0;
+}
+</style>
+</head>
+<body>
+<div id="board">
+  <div class="square">X</div>
+  <div class="square">O</div>
+  <div class="square">X</div>
+  <div class="square">O</div>
+  <div class="square">X</div>
+  <div class="square">O</div>
+  <div class="square">X</div>
+  <div class="square">O</div>
+  <div class="square">X</div>
+</div>
+</body>
+</html>

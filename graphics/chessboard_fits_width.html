@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+body {
+  font-size: 32px;
+  margin: 0;
+}
+div#wrap {
+}
+div#board {
+  display: grid;
+  grid-template: repeat(8, 1fr) / repeat(8, 1fr);
+}
+div.square {
+  align-items: center;
+  display: flex;
+  font-size: 6.25vw;
+  justify-content: center;
+}
+div.square:nth-child(2n+1 ) { background-color: #fff; } div.square:nth-child(2n+2 ) { background-color: #eee; }
+div.square:nth-child(2n+9 ) { background-color: #eee; } div.square:nth-child(2n+10) { background-color: #fff; }
+div.square:nth-child(2n+17) { background-color: #fff; } div.square:nth-child(2n+18) { background-color: #eee; }
+div.square:nth-child(2n+25) { background-color: #eee; } div.square:nth-child(2n+26) { background-color: #fff; }
+div.square:nth-child(2n+33) { background-color: #fff; } div.square:nth-child(2n+34) { background-color: #eee; }
+div.square:nth-child(2n+41) { background-color: #eee; } div.square:nth-child(2n+42) { background-color: #fff; }
+div.square:nth-child(2n+49) { background-color: #fff; } div.square:nth-child(2n+50) { background-color: #eee; }
+div.square:nth-child(2n+57) { background-color: #eee; } div.square:nth-child(2n+58) { background-color: #fff; }
+
+div#sizer {
+  grid-row: 1;
+  grid-column: 1;
+  width: 0;
+  padding-bottom: 100%;
+}
+
+div.square:nth-child(1) { grid-column: 1; grid-row: 1 }
+
+</style>
+</head>
+<body>
+<div id="wrap">
+<div id="board">
+  <div class="square">&#9820;<!-- black rook   --></div>
+  <div class="square">&#9822;<!-- black knight --></div>
+  <div class="square">&#9821;<!-- black bishop --></div>
+  <div class="square">&#9819;<!-- black queen  --></div>
+  <div class="square">&#9818;<!-- black king   --></div>
+  <div class="square">&#9821;<!-- black bishop --></div>
+  <div class="square">&#9822;<!-- black knight --></div>
+  <div class="square">&#9820;<!-- black rook   --></div>
+
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+  <div class="square">&#9823;<!-- black pawn   --></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+  <div class="square"></div>
+
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+  <div class="square">&#9817;<!-- white pawn   --></div>
+
+  <div class="square">&#9814;<!-- white rook   --></div>
+  <div class="square">&#9816;<!-- white knight --></div>
+  <div class="square">&#9815;<!-- white bishop --></div>
+  <div class="square">&#9813;<!-- white queen  --></div>
+  <div class="square">&#9812;<!-- white king   --></div>
+  <div class="square">&#9815;<!-- white bishop --></div>
+  <div class="square">&#9816;<!-- white knight --></div>
+  <div class="square">&#9814;<!-- white rook   --></div>
+
+  <div id="sizer"></div>
+</div>
+</div>
+</body>
+</html>
