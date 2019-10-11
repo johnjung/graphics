@@ -51,3 +51,12 @@ Resize a set of images to update thumbnails on a website.
 Produce proportionate venn diagrams, where the size of each circle and the
 amount of overlap between circles accurately represents the amounts in each 
 group.
+
+## map
+
+```console
+$ docker pull kotaimen/mapnik
+$ docker run -it kotaimen/mapnik /bin/bash
+$ python3
+$ import mapnik
+```
