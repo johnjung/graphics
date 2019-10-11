@@ -60,3 +60,5 @@ $ docker run -it kotaimen/mapnik /bin/bash
 $ python3
 $ import mapnik
 ```
+
+OpenStreetMap data is free and very detailed. Data for North America was 15Gb compressed and about 170Gb uncompressed- using a download manager helped. 
