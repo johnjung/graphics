@@ -62,3 +62,14 @@ $ import mapnik
 ```
 
 OpenStreetMap data is free and very detailed. Data for North America was 15Gb compressed and about 170Gb uncompressed- using a download manager helped. 
+
+```console
+ll_lat='41'
+ll_lon='-88'
+ur_lat='42'
+ur_lon='-87'
+url="http://overpass-api.de/api/interpreter?data=(node($ll_lat,$ll_lon,$ur_lat,$ur_lon);<;rel(br););out meta;"
+time wget -O out.txt "$url"
+```
+
+Download a subset of OSM data for the Chicago area. 
