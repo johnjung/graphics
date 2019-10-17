@@ -72,4 +72,4 @@ url="http://overpass-api.de/api/interpreter?data=(node($ll_lat,$ll_lon,$ur_lat,$
 time wget -O out.txt "$url"
 ```
 
-Download a subset of OSM data for the Chicago area. 
+Download a subset of OSM data for the Chicago area. Also try the QuickOSM plugin in QGIS. 
