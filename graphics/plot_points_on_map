@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+import geocoder, json, pyproj, sys
+import xml.etree.ElementTree as ElementTree
+
+
+def get_lat_lng(address_str):
+    '''
+    Params:
+        address_str: a human readable address
+
+    Returns
+    '''
+    return geocoder.arcgis(address_str).latlng
+
+
+def merc_x_y_to_pixel_x_y(x, y):
+    '''
+    Params:
+        x (float) Mercator x/y easting, in meters.
+        y (float) Mercator x/y northing, in meters.
+
+    Returns:
+        x (float) inches from left edge of map.
+        x (float) inches from top edge of map.
+    '''
+    # scale to 1/500000
+    x /= 500000 
+    y /= 500000
+
+    # convert from meters to inches
+    x *= 39.3701
+    y *= 39.3701
+
+    # reposition for page and flip y coordinate
+    x -= 30.20593118509154
+    y = 11 - (y - 357.93371497315536)
+
+    return x, y
+
+
+if __name__=='__main__':
+    p = pyproj.Proj(proj='utm',zone=16, ellps='WGS84', preserve_units=False)
+    
+    ElementTree.register_namespace('', 'http://www.w3.org/2000/svg')
+    svg = ElementTree.Element(
+        '{http://www.w3.org/2000/svg}svg',
+        width='8.5in',
+        height='11in',
+        version='1.1'
+    )
+    
+    for map_point in json.load(sys.stdin):
+        # load latitude, longitude coordinates and convert to mercator x/y
+        x, y = p([map_point['lng']], [map_point['lat']])
+        # convert mercator x/y to a position on the page.
+        x, y = merc_x_y_to_pixel_x_y(x[0], y[0])
+   
+        # output a dot for each point on the map. 
+        ElementTree.SubElement(
+            svg,
+            '{http://www.w3.org/2000/svg}circle',
+            cx=str(x) + 'in',
+            cy=str(y) + 'in',
+            r=str(.03125) + 'in'
+        )
+    
+        # output a label for each point on the map.
+        ElementTree.SubElement(
+            svg,
+            '{http://www.w3.org/2000/svg}text',
+            x=str(x + .125) + 'in',
+            y=str(y) + 'in'
+        ).text = map_point['name']
+    
+    print(ElementTree.tostring(svg, encoding='utf8', method='xml').decode('UTF-8'))
