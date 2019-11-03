@@ -52,24 +52,259 @@ Produce proportionate venn diagrams, where the size of each circle and the
 amount of overlap between circles accurately represents the amounts in each 
 group.
 
-## map
+## working with map data
 
-```console
-$ docker pull kotaimen/mapnik
-$ docker run -it kotaimen/mapnik /bin/bash
-$ python3
-$ import mapnik
+A small python script to escape queries, deal with errors and get responses
+back.
+
+```python
+endpoint = 'https://overpass.kumi.systems/api/interpreter'
+
+try:
+    response = urllib.request.urlopen(
+        '{}?data={}'.format(
+            endpoint,
+            urllib.parse.quote(query)
+        )
+    )
+except urllib.error.HTTPError as e:
+    sys.stderr.write(str(e.code) + '\n')
+    sys.stderr.write(str(e.headers) + '\n')
+    sys.stderr.write(str(e.reason) + '\n')
+    sys.exit()
+
+sys.stdout.write(response.read().decode('utf-8'))
 ```
 
-OpenStreetMap data is free and very detailed. Data for North America was 15Gb compressed and about 170Gb uncompressed- using a download manager helped. 
+Get the number of relations in a bounding box. You can also get the number of
+areas, nodes, and ways. nwr returns nodes, ways and relations all at once.
 
 ```console
-ll_lat='41'
-ll_lon='-88'
-ur_lat='42'
-ur_lon='-87'
-url="http://overpass-api.de/api/interpreter?data=(node($ll_lat,$ll_lon,$ur_lat,$ur_lon);<;rel(br););out meta;"
-time wget -O out.txt "$url"
+[out:csv(::count)]
+[bbox:41.7,-87.7,41.75,-87.65];
+relation;
+out count;
 ```
 
-Download a subset of OSM data for the Chicago area. Also try the QuickOSM plugin in QGIS. 
+Get the names of relations in the bounding box. pipe the output of this
+command into sort | uniq -c to get a report.
+
+```console
+[out:csv(name)]
+[bbox:41.7,-87.7,41.75,-87.65];
+relation;
+out;
+```
+
+Get information about nodes named "Illinois".
+
+```console
+[out:csv(::id,::type,name)];
+node[name="Illinois"];
+out;
+```
+
+Get nodes for Illinois or Indiana.
+```console
+node[name~"(Illinois|Indiana)"][place="state"];
+out;
+```
+
+Get a single relation.
+
+```console
+[out:csv(::id,name,::type,::count)]
+[bbox:41.7,-87.7,41.75,-87.65];
+relation[name="Mount Greenwood"];
+out;
+out count;
+```
+
+Get named nodes within 10km of South Holland. 
+
+```console
+[out:csv(::id,name,::type,::lat,::lon)]
+[bbox:41,-88,42,-87];
+node[name="South Holland"]->.south_holland;
+(
+    node[name](around.south_holland:10000);
+);
+out;
+```
+
+Get the latitude and longitude of South Holland. 
+
+```console
+[out:csv(::id,name,::type,::lat,::lon,::count)]
+[maxsize:100]
+[bbox:40,-90,43,-87];
+(
+    node[name="South Holland"];
+);
+out;
+out count;
+```
+
+Get nodes near that latitude and longitude.
+
+```console
+[out:csv(::id,name,::type,::lat,::lon)]
+[bbox:41,-88,42,-87];
+node(around:100,41.587030,-87.582490);
+out;
+```
+
+Get information about a single relation and all its pieces:
+
+```console
+[out:csv(::id,name,::type,::count)]
+[bbox:41.7,-87.7,41.75,-87.65];
+(
+    relation[name="Mount Greenwood"];
+    >;
+);
+out;
+out count;
+```
+
+Get a list of bars in a bounding box. XML output can be opened in QGIS as
+points on a map.
+
+```console
+[out:csv(::id,name,::type,::count)]
+[bbox:41.7,-87.7,41.9,-87.5];
+node["amenity"="bar"];
+out;
+```
+
+Get information about roads in a bounding box.
+
+```console
+[out:csv(::id,name,::type,::count)]
+[bbox:41.7,-87.7,41.9,-87.5];
+(
+    way["highway"];
+    >;
+);
+out;
+out count;
+```
+
+Get the roads themselves, in a format that I can open in QGIS:
+
+```console
+[bbox:41.7,-87.7,41.9,-87.5];
+(
+    way["highway"];
+    >;
+);
+out;
+```
+
+Get I94. Note that this includes each lane separately. 
+
+```console
+[bbox:40,-89,43,-87];
+(
+    relation[name="I 94 (IL)"];
+    >;
+);
+out;
+```
+
+Get "motorways" (highways like I94) in a bounding box. Note that each lane is
+separate, but this is in a format that I can easily manipulate in QGIS. There
+are also some parts of roads missing...I'll have to deal with that. 
+
+```console
+[bbox:40,-90,43,-87];
+(
+    way[highway~"(motorway|trunk)"];
+    >;
+);
+out;
+```
+
+Get counties near Chicago.
+
+```console
+(
+    (
+        rel(122576);  // Cook County, IL
+        rel(1800060); // DuPage County, IL
+        rel(963483);  // Will County, IL
+        rel(963485);  // Lake County, IN
+    );
+    >;
+);
+```
+
+Get "motorways" (highways like I94) in a bounding box. Note that each lane is
+separate, but this is in a format that I can easily manipulate in QGIS. There
+are also some parts of roads missing...I'll have to deal with that. 
+
+```console
+[bbox:40,-90,43,-87];
+(
+    way[highway~"^(motorway|trunk)$"];
+    >;
+);
+out;
+```
+
+Get the outline for Lake Michigan. 
+
+```console
+[out:csv(::id,name,::type,::count)]
+[bbox:40,-90,43,-87];
+(
+    rel[name="Lake Michigan"];
+    >;
+);
+out;
+```
+
+Get outlines for Illinois, Indiana and Michigan.
+
+```console
+(
+    (
+        rel[name="Michigan"];
+        >;
+    );
+    (
+        rel(122586);
+        >;
+    );
+    (
+        rel(161816);
+        >;
+    );
+);
+out;
+```
+
+Get the outline for Chicago.
+
+```console
+[bbox:40,-90,43,-87];
+(
+    (
+        rel[place="city"][name="Chicago"];
+        >;
+    );
+);
+out;
+```
+
+Get neighborhoods (in Chicago). There are about 60 or so neighborhoods in
+Chicago- but this list returns 500 nodes. I can easily "crop" the nodes to only
+include things in Chicago, but what I actually want are a set of labels in the
+city limits for neighborhoods that are a mix of large, well-populated,
+well-known, and evenly spaced. Is that too much of a challenge? 
+
+```console
+[bbox:40,-90,43,-87];
+node[place="neighbourhood"];
+out;
+```
