@@ -68,3 +68,16 @@ if __name__=='__main__':
     plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
     plt.savefig('out.svg', bbox_inches='tight', edgecolor='w', facecolor='w', pad_inches=0)
     # the outline is ugly, and I'd like to change the font.
+    
+    # code to output a dendrogram. 
+    #l = linkage(data, 'complete')
+    #d = dendrogram(
+    #    l,  
+    #    above_threshold_color='k', 
+    #    color_threshold=0, 
+    #    labels=headings_1,
+    #    orientation='left'
+    #)   
+
+    #plt.subplots_adjust(right=0.66)
+    #plt.savefig('out2.svg')
