@@ -12,11 +12,10 @@ def vector_to_distance(v):
 def scale_vector(v, s):
     return numpy.array((v[0] * s, v[1] * s))
 
-def spring_force(v):
-    c1 = 25.0 # a constant
-    c2 = 1.0 # a constant
+def gravity_force(v):
+    c3 = 5.0 # a constant
     d = vector_to_distance(v)
-    force = c1 * math.log2(d / c2)
+    force = c3 / math.pow(d, 2)
 
     return scale_vector(v, 1.0 / d)
 
@@ -28,7 +27,9 @@ def repel_force(v):
     c3 = 25.0 # a constant
     d = vector_to_distance(v)
     force = -1.0 * c3 / math.pow(d, 2)
-
+ 
+    # jej
+    return numpy.array((0, 0))
     return scale_vector(v, force)
 
 def calculate_forces_on_a_node(nodes, node, force):
@@ -49,6 +50,12 @@ def calculate_forces_on_a_node(nodes, node, force):
     """
     return numpy.sum([force(numpy.subtract(n, node)) for n in nodes], 0)
 
+def get_connected_nodes(edges, n):
+    nodes = set()
+    for e in edges:
+        if e[0] == n:
+            nodes.add(e[1])
+    return list(nodes)
 
 if __name__=='__main__':
     width = 612
@@ -76,12 +83,12 @@ if __name__=='__main__':
     # if the node is at a certain cutoff create an edge.
     edges = []
     for a in range(len(headers)):
-        for b in range(y):
+        for b in range(a):
             if mat[a][b] <= 1:
                  edges.append((a, b))
 
     rounds = 0
-    while rounds < 10:
+    while rounds < 100:
         new_nodes = []
         for n in range(len(nodes)):
             new_nodes.append(
@@ -91,7 +98,12 @@ if __name__=='__main__':
                         calculate_forces_on_a_node(
                             nodes[:n] + nodes[n+1:], 
                             nodes[n], 
-                            spring_force
+                            repel_force
+                        ),
+                        calculate_forces_on_a_node(
+                            [nodes[i] for i in get_connected_nodes(edges, n)],
+                            nodes[n],
+                            gravity_force
                         )
                     ],
                     0
