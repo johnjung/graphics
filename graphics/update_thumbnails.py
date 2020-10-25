@@ -87,6 +87,10 @@ if __name__=='__main__':
                     img = img.rotate(90, expand=True)
             except (KeyError, TypeError):
                 pass
-            if img.size[0] > 975 or img.size[1] > 500:
-                img.thumbnail((975, 500), Image.ANTIALIAS)
+
+            # get scaling factor so x is no greater than 975 and y is no
+            # greater than 500.
+            s = min((975.0 / img.size[0], 500.0 / img.size[1]))
+            img = img.resize((int(img.size[0] * s), int(img.size[1] * s)), Image.ANTIALIAS)
+            
             img.save('{}/{}/{}/{}.jpg'.format(arguments['<web-photoalbum-dir>'], d, FULLSIZE, os.path.splitext(f)[0]), 'JPEG')
